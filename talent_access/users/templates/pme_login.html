@@ -9,6 +9,11 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Connexion PME</h2>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} text-center">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
                     {% if form.errors %}
                         <div class="alert alert-danger">Mauvais email ou mot de passe.</div>
                     {% endif %}
