@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Connexion PME - Talent Access 237{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Connexion PME</h2>
+                    {% if form.errors %}
+                        <div class="alert alert-danger">Mauvais email ou mot de passe.</div>
+                    {% endif %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.password.label_tag }}
+                            {{ form.password }}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Se connecter à mon compte PME</button>
+                    </form>
+                    <p class="mt-3 text-center">
+                        Pas encore inscrit ? <a href="{% url 'pme_signup' %}">Créez votre compte PME ici</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
