@@ -16,15 +16,17 @@ class OffreEmploi(models.Model):
 
 class Candidature(models.Model):
     class Statut(models.TextChoices):
-        EN_ATTENTE = 'EN_ATTENTE', 'en attente'
-        ACCEPTEE = 'ACCEPTEE', 'acceptée'
-        REFUSEE = 'REFUSEE', 'refusée'
+        EN_ATTENTE = "en_attente", "en attente"
+        ACCEPTEE = "acceptée", "acceptée"
+        REFUSEE = "refusée", "refusée"
 
     offre = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
     candidat = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
     date_candidature = models.DateTimeField(auto_now_add=True)
-    lettre_motivation = models.TextField()
-    statut_candidature = models.CharField(max_length=20, choices=Statut.choices)
+    lettre_motivation = models.TextField(blank=True)
+    statut = models.CharField(
+        max_length=20, choices=Statut.choices, default=Statut.EN_ATTENTE
+    )
 
     def __str__(self):
         return f"Candidature de {self.candidat.username}"

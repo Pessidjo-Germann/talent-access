@@ -1,0 +1,18 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Postuler à l'offre{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Postuler à {{ offre.titre }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.lettre_motivation.label_tag }}
+            {{ form.lettre_motivation }}
+            {% for error in form.lettre_motivation.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer ma candidature</button>
+    </form>
+</div>
+{% endblock %}
