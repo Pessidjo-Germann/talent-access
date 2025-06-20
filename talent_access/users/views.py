@@ -4,6 +4,8 @@ from .forms import DiplomeSignupForm, PMESignupForm, EmailAuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Utilisateur
+from jobs.models import OffreEmploi, Candidature
+from profiles.models import ProfilDiplome
 
 
 def home(request):
@@ -74,4 +76,20 @@ def diplome_dashboard(request):
 def pme_dashboard(request):
     if request.user.statut != Utilisateur.Statut.PME:
         return redirect("diplome_dashboard")
-    return render(request, "pme_dashboard.html")
+    offres = (
+        OffreEmploi.objects.filter(entreprise=request.user)
+        .order_by("-date_publication")
+    )
+    candidatures = (
+        Candidature.objects.filter(offre__entreprise=request.user)
+        .select_related("candidat", "offre")
+        .order_by("-date_candidature")
+    )
+    return render(
+        request,
+        "pme_dashboard.html",
+        {
+            "offres": offres,
+            "candidatures": candidatures,
+        },
+    )
