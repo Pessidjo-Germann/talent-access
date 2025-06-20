@@ -3,6 +3,56 @@
 {% block content %}
 <div class="container py-5">
     <h2 class="text-center">Bienvenue, {{ request.user.first_name }} !</h2>
+</div>
+
+<div class="container pb-5">
     <p class="text-center">Vous êtes connecté en tant que Diplômé.</p>
+
+    <hr class="my-4">
+    <h3>Profil</h3>
+    <ul class="list-unstyled">
+        <li><strong>Nom :</strong> {{ request.user.get_full_name }}</li>
+        <li><strong>Email :</strong> {{ request.user.email }}</li>
+        {% if profil %}
+            <li><strong>Niveau d'étude :</strong> {{ profil.niveau_etude }}</li>
+            <li><strong>CV :</strong>
+                {% if profil.cv %}
+                    <a href="{{ profil.cv.url }}">Télécharger</a>
+                {% else %}
+                    Non déposé
+                {% endif %}
+            </li>
+        {% endif %}
+    </ul>
+    <a href="#" class="btn btn-secondary mb-4">Modifier mon profil</a>
+
+    <h3>Offres d'emploi disponibles</h3>
+    <ul class="list-group mb-4">
+        {% for offre in offres %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ offre.titre }}</strong>
+                    - {{ offre.entreprise.first_name }}
+                </div>
+                <a href="#" class="btn btn-sm btn-primary">Voir</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">Aucune offre disponible.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Mes candidatures</h3>
+    <ul class="list-group mb-4">
+        {% for cand in candidatures %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>{{ cand.offre.titre }}</div>
+                <span class="badge bg-secondary">{{ cand.get_statut_candidature_display }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item">Aucune candidature envoyée.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="#" class="btn btn-outline-primary">Messagerie</a>
 </div>
 {% endblock %}
