@@ -1,0 +1,17 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Mes candidatures{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Mes candidatures</h2>
+    <ul class="list-group">
+        {% for cand in candidatures %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ cand.offre.titre }}</span>
+            <span class="badge bg-secondary">{{ cand.get_statut_display }}</span>
+        </li>
+        {% empty %}
+        <li class="list-group-item">Aucune candidature pour le moment.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
