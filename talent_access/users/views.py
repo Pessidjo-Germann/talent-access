@@ -67,7 +67,30 @@ def pme_login(request):
 def diplome_dashboard(request):
     if request.user.statut != Utilisateur.Statut.DIPLOME:
         return redirect("pme_dashboard")
-    return render(request, "diplome_dashboard.html")
+    profil = None
+    try:
+        from profiles.models import ProfilDiplome
+        profil = ProfilDiplome.objects.filter(utilisateur=request.user).first()
+    except Exception:
+        profil = None
+
+    try:
+        from jobs.models import OffreEmploi, Candidature
+        offres = OffreEmploi.objects.all()
+        candidatures = (
+            Candidature.objects.filter(candidat=request.user)
+            .select_related("offre")
+        )
+    except Exception:
+        offres = []
+        candidatures = []
+
+    context = {
+        "profil": profil,
+        "offres": offres,
+        "candidatures": candidatures,
+    }
+    return render(request, "diplome_dashboard.html", context)
 
 
 @login_required
