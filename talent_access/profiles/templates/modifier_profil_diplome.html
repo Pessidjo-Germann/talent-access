@@ -1,0 +1,74 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Modifier mon profil{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Modifier mon profil</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            {{ form.numero_telephone.label_tag }}
+            {{ form.numero_telephone }}
+            {% for error in form.numero_telephone.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.adresse.label_tag }}
+            {{ form.adresse }}
+            {% for error in form.adresse.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.date_naissance.label_tag }}
+            {{ form.date_naissance }}
+            {% for error in form.date_naissance.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.niveau_etude.label_tag }}
+            {{ form.niveau_etude }}
+            {% for error in form.niveau_etude.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.cv.label_tag }}
+            {{ form.cv }}
+            {% for error in form.cv.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+        </div>
+        <h4>Compétences</h4>
+        {{ competence_formset.management_form }}
+        {% for cform in competence_formset %}
+        <div class="border p-2 mb-2">
+            {{ cform.id }}
+            <div class="mb-2">
+                {{ cform.nom.label_tag }} {{ cform.nom }}
+                {% for error in cform.nom.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="mb-2">
+                {{ cform.niveau.label_tag }} {{ cform.niveau }}
+                {% for error in cform.niveau.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            {% if cform.instance.pk %}<div>{{ cform.DELETE }} <label for="{{ cform.DELETE.id_for_label }}">Supprimer</label></div>{% endif %}
+        </div>
+        {% endfor %}
+        <h4>Formations/Expériences</h4>
+        {{ formation_formset.management_form }}
+        {% for fform in formation_formset %}
+        <div class="border p-2 mb-2">
+            {{ fform.id }}
+            <div class="mb-2">
+                {{ fform.diplome_obtenu.label_tag }} {{ fform.diplome_obtenu }}
+                {% for error in fform.diplome_obtenu.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="mb-2">
+                {{ fform.date_obtention.label_tag }} {{ fform.date_obtention }}
+                {% for error in fform.date_obtention.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="mb-2">
+                {{ fform.duree_formation.label_tag }} {{ fform.duree_formation }}
+                {% for error in fform.duree_formation.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            {% if fform.instance.pk %}<div>{{ fform.DELETE }} <label for="{{ fform.DELETE.id_for_label }}">Supprimer</label></div>{% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a href="{% url 'voir_profil_diplome' %}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}
