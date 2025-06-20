@@ -1,0 +1,39 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Mon profil{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Mon profil</h2>
+    <ul class="list-group mb-4">
+        <li class="list-group-item"><strong>Nom :</strong> {{ request.user.get_full_name }}</li>
+        <li class="list-group-item"><strong>Email :</strong> {{ request.user.email }}</li>
+        {% if profil %}
+            <li class="list-group-item"><strong>Numéro téléphone :</strong> {{ profil.numero_telephone }}</li>
+            <li class="list-group-item"><strong>Adresse :</strong> {{ profil.adresse }}</li>
+            <li class="list-group-item"><strong>Date de naissance :</strong> {{ profil.date_naissance }}</li>
+            <li class="list-group-item"><strong>Niveau d'étude :</strong> {{ profil.niveau_etude }}</li>
+            <li class="list-group-item"><strong>CV :</strong>
+                {% if profil.cv %}<a href="{{ profil.cv.url }}">Télécharger</a>{% else %}Non déposé{% endif %}
+            </li>
+        {% endif %}
+    </ul>
+    <h3>Compétences</h3>
+    <ul class="list-group mb-4">
+        {% for c in competences %}
+            <li class="list-group-item">{{ c.nom }} - {{ c.get_niveau_display }}</li>
+        {% empty %}
+            <li class="list-group-item">Aucune compétence renseignée.</li>
+        {% endfor %}
+    </ul>
+    <h3>Formations/Expériences</h3>
+    <ul class="list-group mb-4">
+        {% for f in formations %}
+            <li class="list-group-item">
+                <strong>{{ f.diplome_obtenu }}</strong> - {{ f.date_obtention }} ({{ f.duree_formation }})
+            </li>
+        {% empty %}
+            <li class="list-group-item">Aucune formation renseignée.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'modifier_profil_diplome' %}" class="btn btn-primary">Modifier mon profil</a>
+</div>
+{% endblock %}

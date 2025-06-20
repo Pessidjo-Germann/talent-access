@@ -3,7 +3,7 @@ from users.models import Utilisateur
 
 
 class ProfilDiplome(models.Model):
-    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    utilisateur = models.OneToOneField(Utilisateur, on_delete=models.CASCADE)
     numero_telephone = models.CharField(max_length=20)
     adresse = models.CharField(max_length=255)
     date_naissance = models.DateField()

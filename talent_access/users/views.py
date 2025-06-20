@@ -108,6 +108,9 @@ def pme_dashboard(request):
         .select_related("candidat", "offre")
         .order_by("-date_candidature")
     )
+    from profiles.models import ProfilDiplome
+    for cand in candidatures:
+        cand.profil = ProfilDiplome.objects.filter(utilisateur=cand.candidat).first()
     return render(
         request,
         "pme_dashboard.html",

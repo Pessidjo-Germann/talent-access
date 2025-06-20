@@ -71,13 +71,11 @@
                     <tr>
                         <td>{{ c.candidat.first_name }} {{ c.candidat.last_name }}</td>
                         <td>
-                            {% with profil=c.candidat.profildiplome_set.first %}
-                                {% if profil and profil.cv %}
-                                    <a href="{{ profil.cv.url }}" class="btn btn-sm btn-outline-primary">Télécharger</a>
-                                {% else %}
-                                    <span class="text-muted">Aucun CV</span>
-                                {% endif %}
-                            {% endwith %}
+                            {% if c.profil and c.profil.cv %}
+                                <a href="{{ c.profil.cv.url }}" class="btn btn-sm btn-outline-primary">Télécharger</a>
+                            {% else %}
+                                <span class="text-muted">Aucun CV</span>
+                            {% endif %}
                         </td>
                         <td>{{ c.get_statut_display }}</td>
                         <td><a href="#" class="btn btn-sm btn-outline-primary">Répondre</a></td>
