@@ -156,6 +156,27 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        <template id="competence-empty-form">
+                            <div class="dynamic-form-item">
+                                {{ competence_formset.empty_form.id }}
+                                <div class="dynamic-form-content">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ competence_formset.empty_form.nom.label }}</label>
+                                                {{ competence_formset.empty_form.nom }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ competence_formset.empty_form.niveau.label }}</label>
+                                                {{ competence_formset.empty_form.niveau }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
                         <button type="button" class="btn btn-outline-primary add-form-btn" onclick="addCompetenceForm()">
                             <i class="fas fa-plus me-2"></i>Ajouter une compétence
                         </button>
@@ -216,6 +237,33 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        <template id="formation-empty-form">
+                            <div class="dynamic-form-item">
+                                {{ formation_formset.empty_form.id }}
+                                <div class="dynamic-form-content">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ formation_formset.empty_form.diplome_obtenu.label }}</label>
+                                                {{ formation_formset.empty_form.diplome_obtenu }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ formation_formset.empty_form.date_obtention.label }}</label>
+                                                {{ formation_formset.empty_form.date_obtention }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ formation_formset.empty_form.duree_formation.label }}</label>
+                                                {{ formation_formset.empty_form.duree_formation }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
                         <button type="button" class="btn btn-outline-primary add-form-btn" onclick="addFormationForm()">
                             <i class="fas fa-plus me-2"></i>Ajouter une formation
                         </button>
@@ -238,13 +286,27 @@
 
 <script>
 function addCompetenceForm() {
-    // Logique pour ajouter dynamiquement une nouvelle compétence
-    console.log('Ajouter compétence');
+    const container = document.getElementById('competences-container');
+    const totalForms = document.getElementById('id_competence_set-TOTAL_FORMS');
+    const template = document.getElementById('competence-empty-form').innerHTML;
+    const formIdx = parseInt(totalForms.value);
+    const newForm = template.replace(/__prefix__/g, formIdx);
+    const div = document.createElement('div');
+    div.innerHTML = newForm;
+    container.appendChild(div.firstElementChild);
+    totalForms.value = formIdx + 1;
 }
 
 function addFormationForm() {
-    // Logique pour ajouter dynamiquement une nouvelle formation
-    console.log('Ajouter formation');
+    const container = document.getElementById('formations-container');
+    const totalForms = document.getElementById('id_formationexperience_set-TOTAL_FORMS');
+    const template = document.getElementById('formation-empty-form').innerHTML;
+    const formIdx = parseInt(totalForms.value);
+    const newForm = template.replace(/__prefix__/g, formIdx);
+    const div = document.createElement('div');
+    div.innerHTML = newForm;
+    container.appendChild(div.firstElementChild);
+    totalForms.value = formIdx + 1;
 }
 </script>
 {% endblock %}
