@@ -1,0 +1,40 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Nouvelle offre{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Publier une offre</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            {{ form.titre.label_tag }}
+            {{ form.titre }}
+            {% for error in form.titre.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {% for error in form.description.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.type_contrat.label_tag }}
+            {{ form.type_contrat }}
+            {% for error in form.type_contrat.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            {{ form.localisation.label_tag }}
+            {{ form.localisation }}
+            {% for error in form.localisation.errors %}
+            <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">Publier</button>
+    </form>
+</div>
+{% endblock %}

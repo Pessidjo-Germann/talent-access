@@ -1,0 +1,31 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Candidatures reçues{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Candidatures reçues</h2>
+    {% if candidatures %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Offre</th>
+                    <th>Candidat</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cand in candidatures %}
+                <tr>
+                    <td>{{ cand.offre.titre }}</td>
+                    <td>{{ cand.candidat.get_full_name|default:cand.candidat.username }}</td>
+                    <td>{{ cand.get_statut_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-muted">Aucune candidature.</p>
+    {% endif %}
+</div>
+{% endblock %}
