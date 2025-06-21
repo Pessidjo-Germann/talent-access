@@ -33,13 +33,17 @@ def voir_profil_diplome(request):
 def modifier_profil_diplome(request):
     if request.user.statut != Utilisateur.Statut.DIPLOME:
         return redirect("pme_dashboard")
-    profil, _ = ProfilDiplome.objects.get_or_create(utilisateur=request.user)
+    profil = ProfilDiplome.objects.filter(utilisateur=request.user).first()
     if request.method == "POST":
         form = ProfilDiplomeForm(request.POST, request.FILES, instance=profil)
         comp_formset = CompetenceFormSet(request.POST, instance=profil)
         form_formset = FormationExperienceFormSet(request.POST, instance=profil)
         if form.is_valid() and comp_formset.is_valid() and form_formset.is_valid():
-            form.save()
+            profil = form.save(commit=False)
+            profil.utilisateur = request.user
+            profil.save()
+            comp_formset.instance = profil
+            form_formset.instance = profil
             comp_formset.save()
             form_formset.save()
             messages.success(request, "Profil mis à jour")
