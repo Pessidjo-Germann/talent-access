@@ -18,6 +18,6 @@ urlpatterns = [
     path('diplome/profil/modifier/', profile_views.modifier_profil_diplome, name='modifier_profil_diplome'),
 
     path('logout/', auth_views.LogoutView.as_view(next_page='diplome_login'), name='logout'),
-    #path('jobs/', include('jobs.urls')),
+    path('jobs/', include('jobs.urls')),
  
 ]

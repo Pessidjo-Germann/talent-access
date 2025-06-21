@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
 from users.models import Utilisateur
-from .forms import CandidatureForm
+from .forms import CandidatureForm, OffreForm
 from .models import Candidature, OffreEmploi
 
 
@@ -77,3 +77,22 @@ def candidatures_recues(request):
         "candidatures_reçues.html",
         {"candidatures": candidatures},
     )
+
+
+@login_required
+def creer_offre(request):
+    if request.user.statut != Utilisateur.Statut.PME:
+        return redirect("diplome_dashboard")
+
+    if request.method == "POST":
+        form = OffreForm(request.POST)
+        if form.is_valid():
+            offre = form.save(commit=False)
+            offre.entreprise = request.user
+            offre.save()
+            messages.success(request, "Offre créée.")
+            return redirect("pme_dashboard")
+    else:
+        form = OffreForm()
+
+    return render(request, "creer_offre.html", {"form": form})
