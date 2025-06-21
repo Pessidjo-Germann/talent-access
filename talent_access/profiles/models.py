@@ -36,3 +36,15 @@ class FormationExperience(models.Model):
 
     def __str__(self):
         return self.diplome_obtenu
+
+
+class ProfilPME(models.Model):
+    utilisateur = models.OneToOneField(Utilisateur, on_delete=models.CASCADE)
+    nom_entreprise = models.CharField(max_length=255)
+    secteur_activite = models.CharField(max_length=255)
+    adresse = models.CharField(max_length=255)
+    site_web = models.URLField(blank=True, null=True)
+    logo = models.ImageField(upload_to='logos/', blank=True, null=True)
+
+    def __str__(self):
+        return self.nom_entreprise

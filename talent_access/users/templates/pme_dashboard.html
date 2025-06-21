@@ -11,7 +11,7 @@
             <li class="list-group-item"><strong>Secteur :</strong> {{ request.user.last_name }}</li>
             <li class="list-group-item"><strong>Email :</strong> {{ request.user.email }}</li>
         </ul>
-        <a href="#" class="btn btn-link mt-2">Modifier mon profil</a>
+        <a href="{% url 'voir_profil_pme' %}" class="btn btn-link mt-2">Modifier mon profil</a>
     </div>
 
     <div class="mb-5">

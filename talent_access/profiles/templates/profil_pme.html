@@ -1,0 +1,21 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Mon Profil PME{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Profil de l'entreprise</h2>
+    {% if profil %}
+    <ul class="list-group mb-3">
+        <li class="list-group-item"><strong>Nom :</strong> {{ profil.nom_entreprise }}</li>
+        <li class="list-group-item"><strong>Secteur :</strong> {{ profil.secteur_activite }}</li>
+        <li class="list-group-item"><strong>Adresse :</strong> {{ profil.adresse }}</li>
+        <li class="list-group-item"><strong>Site web :</strong> {{ profil.site_web|default:'-' }}</li>
+        {% if profil.logo %}
+            <li class="list-group-item"><img src="{{ profil.logo.url }}" alt="Logo" class="img-fluid"/></li>
+        {% endif %}
+    </ul>
+    {% else %}
+        <p class="text-muted">Aucun profil renseigné.</p>
+    {% endif %}
+    <a href="{% url 'modifier_profil_pme' %}" class="btn btn-primary">Modifier</a>
+</div>
+{% endblock %}

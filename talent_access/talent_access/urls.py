@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from users import views as user_views
+from profiles import views as profile_views
 
 urlpatterns = [
     path('', user_views.home, name='home'),
@@ -11,4 +12,6 @@ urlpatterns = [
     path('pme/login/', user_views.pme_login, name='pme_login'),
     path('diplome/dashboard/', user_views.diplome_dashboard, name='diplome_dashboard'),
     path('pme/dashboard/', user_views.pme_dashboard, name='pme_dashboard'),
+    path('pme/profil/', profile_views.voir_profil_pme, name='voir_profil_pme'),
+    path('pme/profil/modifier/', profile_views.modifier_profil_pme, name='modifier_profil_pme'),
 ]
