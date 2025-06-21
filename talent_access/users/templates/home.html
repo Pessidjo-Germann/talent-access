@@ -3,16 +3,16 @@
 {% block title %}Accueil - Talent Access 237{% endblock %}
 
 {% block content %}
-<section class="py-5 text-center container">
-    <div class="row py-lg-5">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            <h1 class="fw-light mb-4">Bienvenue sur Talent Access 237</h1>
-            <p class="lead text-muted">Connectez diplômés et entreprises rapidement</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
-                <a href="{% url 'diplome_signup' %}" class="btn btn-primary btn-lg px-4">Je suis Diplômé(e)</a>
+<div class="container py-5">
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Bienvenue sur Talent Access 237</h1>
+            <p class="col-md-8 fs-4">Connectez diplômés et entreprises rapidement.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a href="{% url 'diplome_signup' %}" class="btn btn-primary btn-lg px-4 me-md-2">Je suis Diplômé(e)</a>
                 <a href="{% url 'pme_signup' %}" class="btn btn-outline-primary btn-lg px-4">Je suis une PME</a>
             </div>
         </div>
     </div>
-</section>
+</div>
 {% endblock %}

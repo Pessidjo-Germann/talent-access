@@ -1,58 +1,245 @@
 {% extends 'dashboard_base.html' %}
 {% block title %}Tableau de bord Diplômé{% endblock %}
 {% block content %}
-<div class="container py-5">
-    <h2 class="text-center">Bienvenue, {{ request.user.first_name }} !</h2>
-</div>
-
-<div class="container pb-5">
-    <p class="text-center">Vous êtes connecté en tant que Diplômé.</p>
-
-    <hr class="my-4">
-    <h3>Profil</h3>
-    <ul class="list-unstyled">
-        <li><strong>Nom :</strong> {{ request.user.get_full_name }}</li>
-        <li><strong>Email :</strong> {{ request.user.email }}</li>
-        {% if profil %}
-            <li><strong>Niveau d'étude :</strong> {{ profil.niveau_etude }}</li>
-            <li><strong>CV :</strong>
-                {% if profil.cv %}
-                    <a href="{{ profil.cv.url }}">Télécharger</a>
-                {% else %}
-                    Non déposé
-                {% endif %}
-            </li>
-        {% endif %}
-    </ul>
-    <a href="{% url 'voir_profil_diplome' %}" class="btn btn-secondary mb-4">Voir mon profil</a>
-
-    <h3>Offres d'emploi disponibles</h3>
-    <ul class="list-group mb-4">
-        {% for offre in offres %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>{{ offre.titre }}</strong>
-                    - {{ offre.entreprise.first_name }}
+<div class="container-fluid py-5">
+    <!-- Header Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="welcome-header text-center">
+                <div class="avatar-container mb-3">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
                 </div>
-                <a href="#" class="btn btn-sm btn-primary">Voir</a>
-            </li>
-        {% empty %}
-            <li class="list-group-item">Aucune offre disponible.</li>
-        {% endfor %}
-    </ul>
+                <h1 class="welcome-title">Bienvenue, {{ request.user.first_name|default:"Diplômé" }} !</h1>
+                <p class="welcome-subtitle">Votre tableau de bord personnel</p>
+            </div>
+        </div>
+    </div>
 
-    <h3>Mes candidatures</h3>
-    <ul class="list-group mb-4">
-        {% for cand in candidatures %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>{{ cand.offre.titre }}</div>
-                <span class="badge bg-secondary">{{ cand.get_statut_display }}</span>
-            </li>
-        {% empty %}
-            <li class="list-group-item">Aucune candidature envoyée.</li>
-        {% endfor %}
-    </ul>
+    <!-- Stats Cards -->
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon bg-primary">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="stats-content">
+                    <h3>{{ candidatures|length }}</h3>
+                    <p>Candidatures</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon bg-success">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="stats-content">
+                    <h3>{{ offres|length }}</h3>
+                    <p>Offres disponibles</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon bg-info">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="stats-content">
+                    <h3>{% if profil %}Complet{% else %}Incomplet{% endif %}</h3>
+                    <p>Profil</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon bg-warning">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="stats-content">
+                    <h3>0</h3>
+                    <p>Messages</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <a href="#" class="btn btn-outline-primary">Messagerie</a>
+    <div class="row">
+        <!-- Profile Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="dashboard-card h-100">
+                <div class="card-header">
+                    <h3><i class="fas fa-user-circle me-2"></i>Mon Profil</h3>
+                </div>
+                <div class="card-body">
+                    <div class="profile-info">
+                        <div class="info-item">
+                            <i class="fas fa-user text-primary"></i>
+                            <div>
+                                <span class="label">Nom complet</span>
+                                <span class="value">{{ request.user.get_full_name|default:"Non renseigné" }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope text-primary"></i>
+                            <div>
+                                <span class="label">Email</span>
+                                <span class="value">{{ request.user.email }}</span>
+                            </div>
+                        </div>
+                        {% if profil %}
+                            <div class="info-item">
+                                <i class="fas fa-graduation-cap text-primary"></i>
+                                <div>
+                                    <span class="label">Niveau d'étude</span>
+                                    <span class="value">{{ profil.niveau_etude }}</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-file-pdf text-primary"></i>
+                                <div>
+                                    <span class="label">CV</span>
+                                    {% if profil.cv %}
+                                        <a href="{{ profil.cv.url }}" class="cv-link">
+                                            <i class="fas fa-download me-1"></i>Télécharger
+                                        </a>
+                                    {% else %}
+                                        <span class="value text-muted">Non déposé</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-actions mt-4">
+                        <a href="{% url 'voir_profil_diplome' %}" class="btn btn-primary btn-block">
+                            <i class="fas fa-edit me-2"></i>Gérer mon profil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Offers Card -->
+        <div class="col-lg-8 mb-4">
+            <div class="dashboard-card h-100">
+                <div class="card-header">
+                    <h3><i class="fas fa-briefcase me-2"></i>Offres d'emploi disponibles</h3>
+                </div>
+                <div class="card-body">
+                    {% if offres %}
+                        <div class="offers-container">
+                            {% for offre in offres %}
+                                <div class="offer-item">
+                                    <div class="offer-content">
+                                        <div class="offer-header">
+                                            <h4 class="offer-title">{{ offre.titre }}</h4>
+                                            <span class="company-name">{{ offre.entreprise.first_name }}</span>
+                                        </div>
+                                        <div class="offer-meta">
+                                            <span class="meta-item">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                {{ offre.localisation|default:"Non spécifié" }}
+                                            </span>
+                                            <span class="meta-item">
+                                                <i class="fas fa-clock"></i>
+                                                {{ offre.date_publication|date:"d M Y" }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="offer-actions">
+                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Voir
+                                        </a>
+                                        <a href="#" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-paper-plane me-1"></i>Postuler
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <h4>Aucune offre disponible</h4>
+                            <p class="text-muted">Il n'y a actuellement aucune offre d'emploi disponible.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Applications Card -->
+        <div class="col-lg-8 mb-4">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-paper-plane me-2"></i>Mes candidatures</h3>
+                </div>
+                <div class="card-body">
+                    {% if candidatures %}
+                        <div class="applications-container">
+                            {% for cand in candidatures %}
+                                <div class="application-item">
+                                    <div class="application-content">
+                                        <h4 class="application-title">{{ cand.offre.titre }}</h4>
+                                        <p class="company-name">{{ cand.offre.entreprise.first_name }}</p>
+                                        <span class="application-date">
+                                            <i class="fas fa-calendar"></i>
+                                            {{ cand.date_candidature|date:"d M Y" }}
+                                        </span>
+                                    </div>
+                                    <div class="application-status">
+                                        <span class="status-badge status-{{ cand.statut|lower }}">
+                                            {{ cand.get_statut_display }}
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-paper-plane fa-3x text-muted mb-3"></i>
+                            <h4>Aucune candidature</h4>
+                            <p class="text-muted">Vous n'avez envoyé aucune candidature pour le moment.</p>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Parcourir les offres
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-rocket me-2"></i>Actions rapides</h3>
+                </div>
+                <div class="card-body">
+                    <div class="quick-actions">
+                        <a href="#" class="quick-action-btn">
+                            <i class="fas fa-envelope"></i>
+                            <span>Messagerie</span>
+                        </a>
+                        <a href="{% url 'voir_profil_diplome' %}" class="quick-action-btn">
+                            <i class="fas fa-user-edit"></i>
+                            <span>Modifier profil</span>
+                        </a>
+                        <a href="#" class="quick-action-btn">
+                            <i class="fas fa-search"></i>
+                            <span>Rechercher offres</span>
+                        </a>
+                        <a href="#" class="quick-action-btn">
+                            <i class="fas fa-file-upload"></i>
+                            <span>Mettre à jour CV</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -2,93 +2,97 @@
 {% block title %}Tableau de bord PME{% endblock %}
 {% block content %}
 <div class="container py-5">
-    <h2 class="text-center mb-4">Bienvenue, {{ request.user.first_name }} !</h2>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center mb-4">Bienvenue, {{ request.user.first_name }} !</h2>
 
-    <div class="mb-5">
-        <h4>Profil de l'entreprise</h4>
-        <ul class="list-group">
-            <li class="list-group-item"><strong>Nom :</strong> {{ request.user.first_name }}</li>
-            <li class="list-group-item"><strong>Secteur :</strong> {{ request.user.last_name }}</li>
-            <li class="list-group-item"><strong>Email :</strong> {{ request.user.email }}</li>
-        </ul>
-        <a href="#" class="btn btn-link mt-2">Modifier mon profil</a>
-    </div>
+            <div class="mb-5">
+                <h4>Profil de l'entreprise</h4>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Nom :</strong> {{ request.user.first_name }}</li>
+                    <li class="list-group-item"><strong>Secteur :</strong> {{ request.user.last_name }}</li>
+                    <li class="list-group-item"><strong>Email :</strong> {{ request.user.email }}</li>
+                </ul>
+                <a href="#" class="btn btn-link mt-2">Modifier mon profil</a>
+            </div>
 
-    <div class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h4 class="mb-0">Mes offres d'emploi</h4>
-            <a href="#" class="btn btn-primary">Nouvelle offre</a>
+            <div class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="mb-0">Mes offres d'emploi</h4>
+                    <a href="#" class="btn btn-primary">Nouvelle offre</a>
+                </div>
+                {% if offres %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Date</th>
+                                <th>Type de contrat</th>
+                                <th>Candidatures</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for offre in offres %}
+                            <tr>
+                                <td>{{ offre.titre }}</td>
+                                <td>{{ offre.date_publication|date:"d/m/Y" }}</td>
+                                <td>{{ offre.type_contrat }}</td>
+                                <td>{{ offre.candidature_set.count }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Voir</a>
+                                    <a href="#" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">Aucune offre n'a encore été créée.</p>
+                {% endif %}
+            </div>
+
+            <div class="mb-5">
+                <h4 class="mb-3">Candidatures reçues</h4>
+                {% if candidatures %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Candidat</th>
+                                <th>CV</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in candidatures %}
+                            <tr>
+                                <td>{{ c.candidat.first_name }} {{ c.candidat.last_name }}</td>
+                                <td>
+                                    {% if c.profil and c.profil.cv %}
+                                        <a href="{{ c.profil.cv.url }}" class="btn btn-sm btn-outline-primary">Télécharger</a>
+                                    {% else %}
+                                        <span class="text-muted">Aucun CV</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ c.get_statut_display }}</td>
+                                <td><a href="#" class="btn btn-sm btn-outline-primary">Répondre</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">Aucune candidature pour le moment.</p>
+                {% endif %}
+            </div>
+
+            <a href="#" class="btn btn-outline-secondary">Accéder à la messagerie</a>
         </div>
-        {% if offres %}
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Titre</th>
-                        <th>Date</th>
-                        <th>Type de contrat</th>
-                        <th>Candidatures</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for offre in offres %}
-                    <tr>
-                        <td>{{ offre.titre }}</td>
-                        <td>{{ offre.date_publication|date:"d/m/Y" }}</td>
-                        <td>{{ offre.type_contrat }}</td>
-                        <td>{{ offre.candidature_set.count }}</td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Voir</a>
-                            <a href="#" class="btn btn-sm btn-outline-secondary">Modifier</a>
-                            <a href="#" class="btn btn-sm btn-outline-danger">Supprimer</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <p class="text-muted">Aucune offre n'a encore été créée.</p>
-        {% endif %}
     </div>
-
-    <div class="mb-5">
-        <h4 class="mb-3">Candidatures reçues</h4>
-        {% if candidatures %}
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Candidat</th>
-                        <th>CV</th>
-                        <th>Statut</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for c in candidatures %}
-                    <tr>
-                        <td>{{ c.candidat.first_name }} {{ c.candidat.last_name }}</td>
-                        <td>
-                            {% if c.profil and c.profil.cv %}
-                                <a href="{{ c.profil.cv.url }}" class="btn btn-sm btn-outline-primary">Télécharger</a>
-                            {% else %}
-                                <span class="text-muted">Aucun CV</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ c.get_statut_display }}</td>
-                        <td><a href="#" class="btn btn-sm btn-outline-primary">Répondre</a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <p class="text-muted">Aucune candidature pour le moment.</p>
-        {% endif %}
-    </div>
-
-    <a href="#" class="btn btn-outline-secondary">Accéder à la messagerie</a>
 </div>
 {% endblock %}
