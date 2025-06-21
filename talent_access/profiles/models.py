@@ -36,3 +36,14 @@ class FormationExperience(models.Model):
 
     def __str__(self):
         return self.diplome_obtenu
+
+
+class ProfilPME(models.Model):
+    utilisateur = models.OneToOneField(Utilisateur, on_delete=models.CASCADE)
+    telephone = models.CharField(max_length=20, blank=True)
+    adresse = models.CharField(max_length=255, blank=True)
+    site_web = models.URLField(blank=True)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Profil PME de {self.utilisateur.username}"

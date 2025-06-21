@@ -7,8 +7,9 @@ from .forms import (
     CompetenceFormSet,
     FormationExperienceFormSet,
     ProfilDiplomeForm,
+    ProfilPMEForm,
 )
-from .models import ProfilDiplome
+from .models import ProfilDiplome, ProfilPME
 
 
 @login_required
@@ -58,3 +59,30 @@ def modifier_profil_diplome(request):
         "formation_formset": form_formset,
     }
     return render(request, "modifier_profil_diplome.html", context)
+
+
+@login_required
+def voir_profil_pme(request):
+    if request.user.statut != Utilisateur.Statut.PME:
+        return redirect("diplome_dashboard")
+    profil = ProfilPME.objects.filter(utilisateur=request.user).first()
+    context = {"profil": profil}
+    return render(request, "profil_pme.html", context)
+
+
+@login_required
+def modifier_profil_pme(request):
+    if request.user.statut != Utilisateur.Statut.PME:
+        return redirect("diplome_dashboard")
+    profil = ProfilPME.objects.filter(utilisateur=request.user).first()
+    if request.method == "POST":
+        form = ProfilPMEForm(request.POST, instance=profil)
+        if form.is_valid():
+            profil = form.save(commit=False)
+            profil.utilisateur = request.user
+            profil.save()
+            messages.success(request, "Profil PME mis à jour")
+            return redirect("voir_profil_pme")
+    else:
+        form = ProfilPMEForm(instance=profil)
+    return render(request, "modifier_profil_pme.html", {"form": form})

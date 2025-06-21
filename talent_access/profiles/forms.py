@@ -1,6 +1,11 @@
 from django import forms
 from django.forms import inlineformset_factory
-from .models import ProfilDiplome, Competence, FormationExperience
+from .models import (
+    ProfilDiplome,
+    Competence,
+    FormationExperience,
+    ProfilPME,
+)
 
 
 class ProfilDiplomeForm(forms.ModelForm):
@@ -24,3 +29,9 @@ FormationExperienceFormSet = inlineformset_factory(
     extra=1,
     can_delete=True,
 )
+
+
+class ProfilPMEForm(forms.ModelForm):
+    class Meta:
+        model = ProfilPME
+        exclude = ("utilisateur",)
