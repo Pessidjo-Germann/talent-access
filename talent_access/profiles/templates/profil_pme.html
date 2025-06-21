@@ -1,0 +1,19 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Profil PME{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Mon entreprise</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Nom :</strong> {{ request.user.first_name }}</li>
+        <li class="list-group-item"><strong>Secteur :</strong> {{ request.user.last_name }}</li>
+        <li class="list-group-item"><strong>Email :</strong> {{ request.user.email }}</li>
+        {% if profil %}
+            {% if profil.telephone %}<li class="list-group-item"><strong>Téléphone :</strong> {{ profil.telephone }}</li>{% endif %}
+            {% if profil.adresse %}<li class="list-group-item"><strong>Adresse :</strong> {{ profil.adresse }}</li>{% endif %}
+            {% if profil.site_web %}<li class="list-group-item"><strong>Site web :</strong> <a href="{{ profil.site_web }}" target="_blank">{{ profil.site_web }}</a></li>{% endif %}
+            {% if profil.description %}<li class="list-group-item">{{ profil.description }}</li>{% endif %}
+        {% endif %}
+    </ul>
+    <a href="{% url 'modifier_profil_pme' %}" class="btn btn-primary mt-3">Modifier mon profil</a>
+</div>
+{% endblock %}

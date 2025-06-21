@@ -17,6 +17,9 @@ urlpatterns = [
     path('diplome/profil/', profile_views.voir_profil_diplome, name='voir_profil_diplome'),
     path('diplome/profil/modifier/', profile_views.modifier_profil_diplome, name='modifier_profil_diplome'),
 
+    path('pme/profil/', profile_views.voir_profil_pme, name='voir_profil_pme'),
+    path('pme/profil/modifier/', profile_views.modifier_profil_pme, name='modifier_profil_pme'),
+
     path('logout/', auth_views.LogoutView.as_view(next_page='diplome_login'), name='logout'),
     path('jobs/', include('jobs.urls')),
  

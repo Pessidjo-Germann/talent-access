@@ -33,6 +33,10 @@
                                     <li><a class="dropdown-item" href="{% url 'voir_profil_diplome' %}">
                                         <i class="fas fa-user me-2"></i>Mon Profil
                                     </a></li>
+                                {% elif user.statut == user.Statut.PME %}
+                                    <li><a class="dropdown-item" href="{% url 'voir_profil_pme' %}">
+                                        <i class="fas fa-user me-2"></i>Mon Profil
+                                    </a></li>
                                 {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">
