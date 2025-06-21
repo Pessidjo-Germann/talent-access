@@ -1,74 +1,250 @@
 {% extends 'dashboard_base.html' %}
 {% block title %}Modifier mon profil{% endblock %}
 {% block content %}
-<div class="container py-5">
-    <h2 class="mb-4">Modifier mon profil</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        <div class="mb-3">
-            {{ form.numero_telephone.label_tag }}
-            {{ form.numero_telephone }}
-            {% for error in form.numero_telephone.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-        </div>
-        <div class="mb-3">
-            {{ form.adresse.label_tag }}
-            {{ form.adresse }}
-            {% for error in form.adresse.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-        </div>
-        <div class="mb-3">
-            {{ form.date_naissance.label_tag }}
-            {{ form.date_naissance }}
-            {% for error in form.date_naissance.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-        </div>
-        <div class="mb-3">
-            {{ form.niveau_etude.label_tag }}
-            {{ form.niveau_etude }}
-            {% for error in form.niveau_etude.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-        </div>
-        <div class="mb-3">
-            {{ form.cv.label_tag }}
-            {{ form.cv }}
-            {% for error in form.cv.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-        </div>
-        <h4>Compétences</h4>
-        {{ competence_formset.management_form }}
-        {% for cform in competence_formset %}
-        <div class="border p-2 mb-2">
-            {{ cform.id }}
-            <div class="mb-2">
-                {{ cform.nom.label_tag }} {{ cform.nom }}
-                {% for error in cform.nom.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="profile-header text-center mb-5">
+                <div class="profile-icon mb-3">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <h2 class="profile-title">Compléter mon profil</h2>
+                <p class="profile-subtitle">Renseignez vos informations pour optimiser vos chances</p>
             </div>
-            <div class="mb-2">
-                {{ cform.niveau.label_tag }} {{ cform.niveau }}
-                {% for error in cform.niveau.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-            </div>
-            {% if cform.instance.pk %}<div>{{ cform.DELETE }} <label for="{{ cform.DELETE.id_for_label }}">Supprimer</label></div>{% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="profile-form">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger alert-modern mb-4">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <!-- Informations personnelles -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-user me-2"></i>Informations personnelles</h3>
+                        <p class="text-muted">Complétez vos informations de base</p>
+                    </div>
+                    <div class="section-content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-phone me-2"></i>{{ form.numero_telephone.label }}
+                                    </label>
+                                    {{ form.numero_telephone }}
+                                    {% for error in form.numero_telephone.errors %}
+                                        <div class="form-error">
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-calendar me-2"></i>{{ form.date_naissance.label }}
+                                    </label>
+                                    {{ form.date_naissance }}
+                                    {% for error in form.date_naissance.errors %}
+                                        <div class="form-error">
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-map-marker-alt me-2"></i>{{ form.adresse.label }}
+                                    </label>
+                                    {{ form.adresse }}
+                                    {% for error in form.adresse.errors %}
+                                        <div class="form-error">
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-graduation-cap me-2"></i>{{ form.niveau_etude.label }}
+                                    </label>
+                                    {{ form.niveau_etude }}
+                                    {% for error in form.niveau_etude.errors %}
+                                        <div class="form-error">
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-file-pdf me-2"></i>{{ form.cv.label }}
+                            </label>
+                            <div class="file-upload-container">
+                                {{ form.cv }}
+                                <div class="file-upload-hint">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Formats acceptés: PDF, DOC, DOCX (Max: 5MB)</span>
+                                </div>
+                            </div>
+                            {% for error in form.cv.errors %}
+                                <div class="form-error">
+                                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compétences -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-cogs me-2"></i>Mes compétences</h3>
+                        <p class="text-muted">Ajoutez vos compétences et votre niveau de maîtrise</p>
+                    </div>
+                    <div class="section-content">
+                        {{ competence_formset.management_form }}
+                        <div id="competences-container">
+                            {% for cform in competence_formset %}
+                                <div class="dynamic-form-item">
+                                    {{ cform.id }}
+                                    <div class="dynamic-form-content">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">{{ cform.nom.label }}</label>
+                                                    {{ cform.nom }}
+                                                    {% for error in cform.nom.errors %}
+                                                        <div class="form-error">{{ error }}</div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="form-label">{{ cform.niveau.label }}</label>
+                                                    {{ cform.niveau }}
+                                                    {% for error in cform.niveau.errors %}
+                                                        <div class="form-error">{{ error }}</div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                {% if cform.instance.pk %}
+                                                    <div class="form-group">
+                                                        <label class="form-label">&nbsp;</label>
+                                                        <div class="form-check">
+                                                            {{ cform.DELETE }}
+                                                            <label for="{{ cform.DELETE.id_for_label }}" class="form-check-label text-danger">
+                                                                <i class="fas fa-trash me-1"></i>Supprimer
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn btn-outline-primary add-form-btn" onclick="addCompetenceForm()">
+                            <i class="fas fa-plus me-2"></i>Ajouter une compétence
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formations -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-certificate me-2"></i>Formations & Expériences</h3>
+                        <p class="text-muted">Renseignez vos diplômes et formations</p>
+                    </div>
+                    <div class="section-content">
+                        {{ formation_formset.management_form }}
+                        <div id="formations-container">
+                            {% for fform in formation_formset %}
+                                <div class="dynamic-form-item">
+                                    {{ fform.id }}
+                                    <div class="dynamic-form-content">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">{{ fform.diplome_obtenu.label }}</label>
+                                                    {{ fform.diplome_obtenu }}
+                                                    {% for error in fform.diplome_obtenu.errors %}
+                                                        <div class="form-error">{{ error }}</div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">{{ fform.date_obtention.label }}</label>
+                                                    {{ fform.date_obtention }}
+                                                    {% for error in fform.date_obtention.errors %}
+                                                        <div class="form-error">{{ error }}</div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="form-label">{{ fform.duree_formation.label }}</label>
+                                                    {{ fform.duree_formation }}
+                                                    {% for error in fform.duree_formation.errors %}
+                                                        <div class="form-error">{{ error }}</div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if fform.instance.pk %}
+                                            <div class="form-check mt-2">
+                                                {{ fform.DELETE }}
+                                                <label for="{{ fform.DELETE.id_for_label }}" class="form-check-label text-danger">
+                                                    <i class="fas fa-trash me-1"></i>Supprimer cette formation
+                                                </label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="btn btn-outline-primary add-form-btn" onclick="addFormationForm()">
+                            <i class="fas fa-plus me-2"></i>Ajouter une formation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-2"></i>Enregistrer mon profil
+                    </button>
+                    <a href="{% url 'voir_profil_diplome' %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-times me-2"></i>Annuler
+                    </a>
+                </div>
+            </form>
         </div>
-        {% endfor %}
-        <h4>Formations/Expériences</h4>
-        {{ formation_formset.management_form }}
-        {% for fform in formation_formset %}
-        <div class="border p-2 mb-2">
-            {{ fform.id }}
-            <div class="mb-2">
-                {{ fform.diplome_obtenu.label_tag }} {{ fform.diplome_obtenu }}
-                {% for error in fform.diplome_obtenu.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-            </div>
-            <div class="mb-2">
-                {{ fform.date_obtention.label_tag }} {{ fform.date_obtention }}
-                {% for error in fform.date_obtention.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-            </div>
-            <div class="mb-2">
-                {{ fform.duree_formation.label_tag }} {{ fform.duree_formation }}
-                {% for error in fform.duree_formation.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
-            </div>
-            {% if fform.instance.pk %}<div>{{ fform.DELETE }} <label for="{{ fform.DELETE.id_for_label }}">Supprimer</label></div>{% endif %}
-        </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-        <a href="{% url 'voir_profil_diplome' %}" class="btn btn-secondary">Annuler</a>
-    </form>
+    </div>
 </div>
+
+<script>
+function addCompetenceForm() {
+    // Logique pour ajouter dynamiquement une nouvelle compétence
+    console.log('Ajouter compétence');
+}
+
+function addFormationForm() {
+    // Logique pour ajouter dynamiquement une nouvelle formation
+    console.log('Ajouter formation');
+}
+</script>
 {% endblock %}

@@ -5,55 +5,124 @@
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm" style="background-color: #f9f9f9;">
-                <div class="card-body">
-                    <h2 class="card-title text-center mb-4">Inscription PME</h2>
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} text-center">{{ message }}</div>
-                        {% endfor %}
+        <div class="col-md-8 col-lg-6">
+            <div class="auth-card">
+                <div class="auth-header text-center mb-4">
+                    <div class="auth-icon mb-3">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h2 class="auth-title">Créer un compte PME</h2>
+                    <p class="auth-subtitle">Rejoignez notre réseau d'entreprises</p>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-modern" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>{{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" novalidate class="auth-form">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-modern" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            {{ form.non_field_errors }}
+                        </div>
                     {% endif %}
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.non_field_errors }}
-                        <div class="mb-3">
-                            {{ form.email.label_tag }}
+
+                    <div class="form-group mb-4">
+                        <label for="id_email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Adresse email
+                        </label>
+                        <div class="input-group">
                             {{ form.email }}
-                            {% for error in form.email.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                            {% endfor %}
                         </div>
-                        <div class="mb-3">
-                            {{ form.company_name.label_tag }}
+                        {% for error in form.email.errors %}
+                            <div class="form-error">
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="id_company_name" class="form-label">
+                            <i class="fas fa-building me-2"></i>Nom de l'entreprise
+                        </label>
+                        <div class="input-group">
                             {{ form.company_name }}
-                            {% for error in form.company_name.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                            {% endfor %}
                         </div>
-                        <div class="mb-3">
-                            {{ form.sector.label_tag }}
+                        {% for error in form.company_name.errors %}
+                            <div class="form-error">
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="id_sector" class="form-label">
+                            <i class="fas fa-industry me-2"></i>Secteur d'activité
+                        </label>
+                        <div class="input-group">
                             {{ form.sector }}
-                            {% for error in form.sector.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                            {% endfor %}
                         </div>
-                        <div class="mb-3">
-                            {{ form.password1.label_tag }}
-                            {{ form.password1 }}
-                            {% for error in form.password1.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                            {% endfor %}
+                        {% for error in form.sector.errors %}
+                            <div class="form-error">
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="id_password1" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>Mot de passe
+                                </label>
+                                <div class="input-group">
+                                    {{ form.password1 }}
+                                </div>
+                                {% for error in form.password1.errors %}
+                                    <div class="form-error">
+                                        <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            {{ form.password2.label_tag }}
-                            {{ form.password2 }}
-                            {% for error in form.password2.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                            {% endfor %}
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="id_password2" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>Confirmer le mot de passe
+                                </label>
+                                <div class="input-group">
+                                    {{ form.password2 }}
+                                </div>
+                                {% for error in form.password2.errors %}
+                                    <div class="form-error">
+                                        <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Créer mon compte PME</button>
-                    </form>
+                    </div>
+
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg auth-btn">
+                            <i class="fas fa-building me-2"></i>
+                            Créer mon compte PME
+                        </button>
+                    </div>
+                </form>
+
+                <div class="auth-footer text-center">
+                    <p class="text-muted mb-3">
+                        Déjà inscrit ?
+                    </p>
+                    <a href="{% url 'pme_login' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>
+                        Se connecter
+                    </a>
                 </div>
             </div>
         </div>

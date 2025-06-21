@@ -1,39 +1,206 @@
 {% extends 'dashboard_base.html' %}
 {% block title %}Mon profil{% endblock %}
 {% block content %}
-<div class="container py-5">
-    <h2 class="mb-4">Mon profil</h2>
-    <ul class="list-group mb-4">
-        <li class="list-group-item"><strong>Nom :</strong> {{ request.user.get_full_name }}</li>
-        <li class="list-group-item"><strong>Email :</strong> {{ request.user.email }}</li>
-        {% if profil %}
-            <li class="list-group-item"><strong>Numéro téléphone :</strong> {{ profil.numero_telephone }}</li>
-            <li class="list-group-item"><strong>Adresse :</strong> {{ profil.adresse }}</li>
-            <li class="list-group-item"><strong>Date de naissance :</strong> {{ profil.date_naissance }}</li>
-            <li class="list-group-item"><strong>Niveau d'étude :</strong> {{ profil.niveau_etude }}</li>
-            <li class="list-group-item"><strong>CV :</strong>
-                {% if profil.cv %}<a href="{{ profil.cv.url }}">Télécharger</a>{% else %}Non déposé{% endif %}
-            </li>
-        {% endif %}
-    </ul>
-    <h3>Compétences</h3>
-    <ul class="list-group mb-4">
-        {% for c in competences %}
-            <li class="list-group-item">{{ c.nom }} - {{ c.get_niveau_display }}</li>
-        {% empty %}
-            <li class="list-group-item">Aucune compétence renseignée.</li>
-        {% endfor %}
-    </ul>
-    <h3>Formations/Expériences</h3>
-    <ul class="list-group mb-4">
-        {% for f in formations %}
-            <li class="list-group-item">
-                <strong>{{ f.diplome_obtenu }}</strong> - {{ f.date_obtention }} ({{ f.duree_formation }})
-            </li>
-        {% empty %}
-            <li class="list-group-item">Aucune formation renseignée.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'modifier_profil_diplome' %}" class="btn btn-primary">Modifier mon profil</a>
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="profile-header text-center mb-5">
+                <div class="profile-icon mb-3">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 class="profile-title">Mon Profil</h2>
+                <p class="profile-subtitle">Gérez vos informations personnelles et professionnelles</p>
+            </div>
+
+            <div class="row">
+                <!-- Informations personnelles -->
+                <div class="col-lg-6 mb-4">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h3><i class="fas fa-user me-2"></i>Informations personnelles</h3>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="profile-info-grid">
+                                <div class="info-item">
+                                    <div class="info-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="info-content">
+                                        <span class="info-label">Nom complet</span>
+                                        <span class="info-value">{{ request.user.get_full_name|default:"Non renseigné" }}</span>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="info-content">
+                                        <span class="info-label">Email</span>
+                                        <span class="info-value">{{ request.user.email }}</span>
+                                    </div>
+                                </div>
+                                {% if profil %}
+                                    <div class="info-item">
+                                        <div class="info-icon">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <span class="info-label">Téléphone</span>
+                                            <span class="info-value">{{ profil.numero_telephone|default:"Non renseigné" }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-icon">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <span class="info-label">Adresse</span>
+                                            <span class="info-value">{{ profil.adresse|default:"Non renseignée" }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-icon">
+                                            <i class="fas fa-calendar"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <span class="info-label">Date de naissance</span>
+                                            <span class="info-value">{{ profil.date_naissance|default:"Non renseignée" }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-icon">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <span class="info-label">Niveau d'étude</span>
+                                            <span class="info-value">{{ profil.niveau_etude|default:"Non renseigné" }}</span>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="empty-profile-state">
+                                        <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
+                                        <h4>Profil incomplet</h4>
+                                        <p class="text-muted">Complétez votre profil pour accéder à plus d'opportunités</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CV Section -->
+                <div class="col-lg-6 mb-4">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h3><i class="fas fa-file-pdf me-2"></i>Mon CV</h3>
+                        </div>
+                        <div class="profile-card-body">
+                            {% if profil and profil.cv %}
+                                <div class="cv-preview">
+                                    <div class="cv-icon">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div class="cv-info">
+                                        <h4>CV téléchargé</h4>
+                                        <p class="text-muted">Fichier disponible</p>
+                                        <a href="{{ profil.cv.url }}" class="btn btn-outline-primary" target="_blank">
+                                            <i class="fas fa-download me-2"></i>Télécharger
+                                        </a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="cv-empty-state">
+                                    <i class="fas fa-file-upload fa-3x text-muted mb-3"></i>
+                                    <h4>Aucun CV téléchargé</h4>
+                                    <p class="text-muted">Ajoutez votre CV pour augmenter vos chances</p>
+                                    <a href="{% url 'modifier_profil_diplome' %}" class="btn btn-primary">
+                                        <i class="fas fa-upload me-2"></i>Télécharger mon CV
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Compétences -->
+                <div class="col-lg-6 mb-4">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h3><i class="fas fa-cogs me-2"></i>Mes compétences</h3>
+                        </div>
+                        <div class="profile-card-body">
+                            {% if competences %}
+                                <div class="competences-grid">
+                                    {% for c in competences %}
+                                        <div class="competence-item">
+                                            <div class="competence-name">{{ c.nom }}</div>
+                                            <div class="competence-level level-{{ c.niveau|lower }}">
+                                                {{ c.get_niveau_display }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="empty-state">
+                                    <i class="fas fa-cogs fa-3x text-muted mb-3"></i>
+                                    <h4>Aucune compétence</h4>
+                                    <p class="text-muted">Ajoutez vos compétences pour valoriser votre profil</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formations -->
+                <div class="col-lg-6 mb-4">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h3><i class="fas fa-certificate me-2"></i>Formations & Expériences</h3>
+                        </div>
+                        <div class="profile-card-body">
+                            {% if formations %}
+                                <div class="formations-timeline">
+                                    {% for f in formations %}
+                                        <div class="formation-item">
+                                            <div class="formation-date">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                {{ f.date_obtention|date:"Y" }}
+                                            </div>
+                                            <div class="formation-content">
+                                                <h4>{{ f.diplome_obtenu }}</h4>
+                                                <p class="formation-duration">
+                                                    <i class="fas fa-clock me-1"></i>
+                                                    {{ f.duree_formation }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="empty-state">
+                                    <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+                                    <h4>Aucune formation</h4>
+                                    <p class="text-muted">Renseignez vos formations et diplômes</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <div class="text-center">
+                <a href="{% url 'modifier_profil_diplome' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-edit me-2"></i>Modifier mon profil
+                </a>
+                <a href="{% url 'diplome_dashboard' %}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>Retour au dashboard
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

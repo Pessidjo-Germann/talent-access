@@ -3,14 +3,153 @@
 {% block title %}Accueil - Talent Access 237{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="p-5 mb-4 bg-light rounded-3">
-        <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">Bienvenue sur Talent Access 237</h1>
-            <p class="col-md-8 fs-4">Connectez diplômés et entreprises rapidement.</p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                <a href="{% url 'diplome_signup' %}" class="btn btn-primary btn-lg px-4 me-md-2">Je suis Diplômé(e)</a>
-                <a href="{% url 'pme_signup' %}" class="btn btn-outline-primary btn-lg px-4">Je suis une PME</a>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Connectez les <span class="text-primary">talents</span> aux <span class="text-success">opportunités</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Talent Access 237 est la plateforme qui met en relation les diplômés camerounais avec les PME locales. 
+                        Trouvez votre prochaine opportunité ou votre prochain talent !
+                    </p>
+                    
+                    <div class="hero-actions">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="user-type-card diplome-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <h3>Je suis Diplômé(e)</h3>
+                                    <p>Trouvez l'emploi de vos rêves et valorisez vos compétences</p>
+                                    <div class="card-actions">
+                                        <a href="{% url 'diplome_signup' %}" class="btn btn-primary btn-block">
+                                            <i class="fas fa-user-plus me-2"></i>S'inscrire
+                                        </a>
+                                        <a href="{% url 'diplome_login' %}" class="btn btn-outline-primary btn-block">
+                                            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="user-type-card pme-card">
+                                    <div class="card-icon">
+                                        <i class="fas fa-building"></i>
+                                    </div>
+                                    <h3>Je suis une PME</h3>
+                                    <p>Recrutez les meilleurs talents pour faire grandir votre entreprise</p>
+                                    <div class="card-actions">
+                                        <a href="{% url 'pme_signup' %}" class="btn btn-success btn-block">
+                                            <i class="fas fa-building me-2"></i>S'inscrire
+                                        </a>
+                                        <a href="{% url 'pme_login' %}" class="btn btn-outline-success btn-block">
+                                            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <div class="floating-elements">
+                        <div class="floating-card card-1">
+                            <i class="fas fa-handshake"></i>
+                            <span>Connexions</span>
+                        </div>
+                        <div class="floating-card card-2">
+                            <i class="fas fa-rocket"></i>
+                            <span>Croissance</span>
+                        </div>
+                        <div class="floating-card card-3">
+                            <i class="fas fa-star"></i>
+                            <span>Excellence</span>
+                        </div>
+                    </div>
+                    <div class="main-illustration">
+                        <i class="fas fa-users fa-10x text-primary opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="features-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="section-title">Pourquoi choisir Talent Access 237 ?</h2>
+                <p class="section-subtitle">Une plateforme conçue pour l'écosystème camerounais</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h4>Recherche Intelligente</h4>
+                    <p>Algorithmes avancés pour matcher les compétences aux besoins des entreprises</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Sécurisé & Fiable</h4>
+                    <p>Vos données sont protégées avec les meilleurs standards de sécurité</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>Rapide & Efficace</h4>
+                    <p>Processus de recrutement optimisé pour gagner du temps</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="stats-section py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="stat-number">500+</h3>
+                    <p class="stat-label">Diplômés Inscrits</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="stat-number">200+</h3>
+                    <p class="stat-label">Entreprises Partenaires</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="stat-number">1000+</h3>
+                    <p class="stat-label">Emplois Trouvés</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="stat-number">95%</h3>
+                    <p class="stat-label">Taux de Satisfaction</p>
+                </div>
             </div>
         </div>
     </div>
