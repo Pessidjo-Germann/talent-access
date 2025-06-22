@@ -1,0 +1,37 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Candidature{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Candidature de {{ candidature.candidat.get_full_name|default:candidature.candidat.email }}</h2>
+    <p><strong>Offre :</strong> {{ candidature.offre.titre }}</p>
+    <div class="mb-4">
+        <h5>Lettre de motivation</h5>
+        {% if candidature.lettre_motivation %}
+            <p>{{ candidature.lettre_motivation|linebreaks }}</p>
+        {% else %}
+            <p class="text-muted">Aucune lettre fournie.</p>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <h5>CV</h5>
+        {% if profil and profil.cv %}
+            <a href="{{ profil.cv.url }}" class="btn btn-outline-primary" target="_blank">Télécharger le CV</a>
+        {% else %}
+            <p class="text-muted">Aucun CV fourni.</p>
+        {% endif %}
+    </div>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="statut" class="form-label">Statut</label>
+            <select id="statut" name="statut" class="form-select">
+                {% for key, val in statuts %}
+                    <option value="{{ key }}" {% if candidature.statut == key %}selected{% endif %}>{{ val }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+        <a href="{% url 'pme_dashboard' %}" class="btn btn-outline-secondary ms-2">Retour</a>
+    </form>
+</div>
+{% endblock %}

@@ -5,6 +5,7 @@ from django.contrib import messages
 from users.models import Utilisateur
 from .forms import CandidatureForm, OffreForm
 from .models import Candidature, OffreEmploi
+from profiles.models import ProfilDiplome
 
 
 @login_required
@@ -76,6 +77,34 @@ def candidatures_recues(request):
         request,
         "candidatures_reçues.html",
         {"candidatures": candidatures},
+    )
+
+
+@login_required
+def candidature_detail(request, candidature_id):
+    """Allow a PME to view and update a candidature."""
+    if request.user.statut != Utilisateur.Statut.PME:
+        return redirect("diplome_dashboard")
+
+    candidature = get_object_or_404(
+        Candidature.objects.select_related("offre", "candidat"),
+        id=candidature_id,
+        offre__entreprise=request.user,
+    )
+    profil = ProfilDiplome.objects.filter(utilisateur=candidature.candidat).first()
+
+    if request.method == "POST":
+        statut = request.POST.get("statut")
+        if statut in dict(Candidature.Statut.choices).keys():
+            candidature.statut = statut
+            candidature.save()
+            messages.success(request, "Statut mis à jour.")
+            return redirect("candidature_detail", candidature_id=candidature.id)
+
+    return render(
+        request,
+        "candidature_detail.html",
+        {"candidature": candidature, "profil": profil, "statuts": Candidature.Statut.choices},
     )
 
 

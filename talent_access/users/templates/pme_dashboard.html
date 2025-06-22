@@ -81,7 +81,8 @@
                                 </td>
                                 <td>{{ c.get_statut_display }}</td>
                                 <td>
-                                    <a href="{% url 'conversation_detail' c.candidat.id %}" class="btn btn-sm btn-outline-primary">Répondre</a>
+                                    <a href="{% url 'candidature_detail' c.id %}" class="btn btn-sm btn-outline-secondary">Voir</a>
+                                    <a href="{% url 'conversation_detail' c.candidat.id %}" class="btn btn-sm btn-outline-primary ms-1">Répondre</a>
                                 </td>
                             </tr>
                             {% endfor %}
