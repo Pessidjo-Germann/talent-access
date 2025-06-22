@@ -1,0 +1,22 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Messagerie{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Mes conversations</h2>
+    {% if conversations %}
+        <ul class="list-group">
+        {% for conv in conversations %}
+            {% with other=conv.other_participant(request.user) %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'conversation_detail' other.id %}">
+                    {{ other.get_full_name|default:other.email }}
+                </a>
+            </li>
+            {% endwith %}
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune conversation.</p>
+    {% endif %}
+</div>
+{% endblock %}
