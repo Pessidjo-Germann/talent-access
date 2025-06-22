@@ -10,4 +10,5 @@ urlpatterns = [
     path('mes-offres/<int:offre_id>/modifier/', views.modifier_offre, name='modifier_offre'),
     path('mes-candidatures/', views.mes_candidatures, name='mes_candidatures'),
     path('candidatures-recues/', views.candidatures_recues, name='candidatures_recues'),
+    path('candidatures/<int:candidature_id>/', views.candidature_detail, name='candidature_detail'),
 ]
