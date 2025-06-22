@@ -1,0 +1,14 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Détail de mon offre{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">{{ offre.titre }}</h2>
+    <p><strong>Lieu :</strong> {{ offre.localisation }}</p>
+    <p><strong>Type de contrat :</strong> {{ offre.type_contrat }}</p>
+    <p class="mt-4">{{ offre.description }}</p>
+    <div class="mt-4">
+        <a href="{% url 'modifier_offre' offre.id %}" class="btn btn-primary">Modifier</a>
+        <a href="{% url 'pme_dashboard' %}" class="btn btn-outline-secondary">Retour</a>
+    </div>
+</div>
+{% endblock %}

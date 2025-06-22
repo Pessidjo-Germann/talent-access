@@ -111,3 +111,37 @@ def offre_detail(request, offre_id):
         "offre_detail.html",
         {"offre": offre, "deja_postule": deja_postule},
     )
+
+
+@login_required
+def offre_pme_detail(request, offre_id):
+    """Display details of an offer for its PME owner."""
+    if request.user.statut != Utilisateur.Statut.PME:
+        return redirect("diplome_dashboard")
+
+    offre = get_object_or_404(OffreEmploi, id=offre_id, entreprise=request.user)
+    return render(request, "offre_pme_detail.html", {"offre": offre})
+
+
+@login_required
+def modifier_offre(request, offre_id):
+    """Allow a PME to edit one of its job offers."""
+    if request.user.statut != Utilisateur.Statut.PME:
+        return redirect("diplome_dashboard")
+
+    offre = get_object_or_404(OffreEmploi, id=offre_id, entreprise=request.user)
+
+    if request.method == "POST":
+        form = OffreForm(request.POST, instance=offre)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Offre mise \u00e0 jour.")
+            return redirect("pme_dashboard")
+    else:
+        form = OffreForm(instance=offre)
+
+    return render(
+        request,
+        "modifier_offre.html",
+        {"form": form, "offre": offre},
+    )

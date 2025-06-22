@@ -41,8 +41,8 @@
                                 <td>{{ offre.type_contrat }}</td>
                                 <td>{{ offre.candidature_set.count }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">Voir</a>
-                                    <a href="#" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                                    <a href="{% url 'voir_offre_pme' offre.id %}" class="btn btn-sm btn-outline-primary">Voir</a>
+                                    <a href="{% url 'modifier_offre' offre.id %}" class="btn btn-sm btn-outline-secondary">Modifier</a>
                                     <a href="#" class="btn btn-sm btn-outline-danger">Supprimer</a>
                                 </td>
                             </tr>
