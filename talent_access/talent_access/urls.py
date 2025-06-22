@@ -22,5 +22,6 @@ urlpatterns = [
 
     path('logout/', auth_views.LogoutView.as_view(next_page='diplome_login'), name='logout'),
     path('jobs/', include('jobs.urls')),
+    path('messages/', include('messagerie.urls')),
  
 ]

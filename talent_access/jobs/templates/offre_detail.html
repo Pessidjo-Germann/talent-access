@@ -13,6 +13,7 @@
         {% else %}
             <a href="{% url 'postuler_offre' offre.id %}" class="btn btn-primary">Postuler</a>
         {% endif %}
+        <a href="{% url 'conversation_detail' offre.entreprise.id %}" class="btn btn-outline-primary">Contacter l'entreprise</a>
         <a href="{% url 'diplome_dashboard' %}" class="btn btn-outline-secondary">Retour au tableau de bord</a>
     </div>
 </div>

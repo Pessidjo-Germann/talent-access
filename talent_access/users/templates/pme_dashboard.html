@@ -80,7 +80,9 @@
                                     {% endif %}
                                 </td>
                                 <td>{{ c.get_statut_display }}</td>
-                                <td><a href="#" class="btn btn-sm btn-outline-primary">Répondre</a></td>
+                                <td>
+                                    <a href="{% url 'conversation_detail' c.candidat.id %}" class="btn btn-sm btn-outline-primary">Répondre</a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -91,7 +93,7 @@
                 {% endif %}
             </div>
 
-            <a href="#" class="btn btn-outline-secondary">Accéder à la messagerie</a>
+            <a href="{% url 'conversation_list' %}" class="btn btn-outline-secondary">Accéder à la messagerie</a>
         </div>
     </div>
 </div>

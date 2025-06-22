@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users',
     'jobs',
     'profiles',
+    'messagerie',
 ]
 
 MIDDLEWARE = [
