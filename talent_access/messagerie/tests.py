@@ -33,3 +33,23 @@ class MessagingTests(TestCase):
         msg = Message.objects.first()
         self.assertEqual(msg.text, "Bonjour")
         self.assertEqual(msg.sender, self.u1)
+
+    def test_message_marked_read_when_viewed(self):
+        conv = Conversation.objects.create(participant1=self.u1, participant2=self.u2)
+        msg = Message.objects.create(conversation=conv, sender=self.u1, text="Hi")
+        self.assertFalse(msg.is_read)
+
+        self.client.login(username="u2@example.com", password="pass12345")
+        url = reverse("conversation_detail", args=[self.u1.id])
+        self.client.get(url)
+        msg.refresh_from_db()
+        self.assertTrue(msg.is_read)
+
+    def test_unread_count_in_list_view(self):
+        conv = Conversation.objects.create(participant1=self.u1, participant2=self.u2)
+        Message.objects.create(conversation=conv, sender=self.u2, text="Salut")
+
+        self.client.login(username="u1@example.com", password="pass12345")
+        response = self.client.get(reverse("conversation_list"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["conversations"][0].unread_count, 1)

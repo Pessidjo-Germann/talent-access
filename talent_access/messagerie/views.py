@@ -15,6 +15,11 @@ def conversation_list(request):
     conversations = []
     for conv in conversations_qs:
         conv.other = conv.other_participant(request.user)
+        conv.unread_count = Message.objects.filter(
+            conversation=conv,
+            sender=conv.other,
+            is_read=False,
+        ).count()
         conversations.append(conv)
 
     return render(
@@ -40,6 +45,7 @@ def conversation_detail(request, user_id):
         )
 
     messages = Message.objects.filter(conversation=conversation)
+    messages.filter(sender=other, is_read=False).update(is_read=True)
 
     if request.method == "POST":
         form = MessageForm(request.POST)

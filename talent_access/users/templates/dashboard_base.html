@@ -38,8 +38,11 @@
                                         <i class="fas fa-user me-2"></i>Mon Profil
                                     </a></li>
                                 {% endif %}
-                                <li><a class="dropdown-item" href="{% url 'conversation_list' %}">
-                                    <i class="fas fa-envelope me-2"></i>Messagerie
+                                <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="{% url 'conversation_list' %}">
+                                    <span><i class="fas fa-envelope me-2"></i>Messagerie</span>
+                                    {% if unread_messages_count %}
+                                        <span class="badge bg-primary rounded-pill">{{ unread_messages_count }}</span>
+                                    {% endif %}
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">

@@ -9,5 +9,5 @@ class ConversationAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ("conversation", "sender", "timestamp")
+    list_display = ("conversation", "sender", "timestamp", "is_read")
     list_filter = ("conversation", "sender")
