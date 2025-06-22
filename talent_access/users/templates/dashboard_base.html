@@ -9,13 +9,24 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
     <link href="{% static 'css/profile.css' %}" rel="stylesheet">
+    <style>
+        .talent-access-logo span {
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        .talent-access-logo .vert { color: #2ecc40; }
+        .talent-access-logo .rouge { color: #ff4136; }
+        .talent-access-logo .jaune { color: #ffdc00; }
+    </style>
 </head>
+
 <body class="bg-light d-flex flex-column min-vh-100">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="{% url 'home' %}">
-                <i class="fas fa-briefcase me-2"></i>Talent Access 237
+            <a class="navbar-brand fw-bold talent-access-logo" href="{% url 'home' %}">
+                <i class="fas fa-briefcase me-2"></i>
+                <span class="vert">Talent</span> <span class="rouge">Access</span> <span class="jaune">237</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -75,9 +86,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p class="text-muted mb-0">
+                    <p class="text-muted mb-0 talent-access-logo">
                         <i class="fas fa-heart text-danger me-1"></i>
-                        © 2025 Talent Access 237 - Connecter les talents aux opportunités
+                        <span class="vert">Talent</span> <span class="rouge">Access</span> <span class="jaune">237</span> - Connecter les talents aux opportunités
                     </p>
                 </div>
             </div>
