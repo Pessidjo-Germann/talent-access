@@ -10,6 +10,9 @@
                 <a href="{% url 'conversation_detail' conv.other.id %}">
                     {{ conv.other.get_full_name|default:conv.other.email }}
                 </a>
+                {% if conv.unread_count %}
+                    <span class="badge bg-primary rounded-pill">{{ conv.unread_count }}</span>
+                {% endif %}
             </li>
         {% endfor %}
         </ul>
