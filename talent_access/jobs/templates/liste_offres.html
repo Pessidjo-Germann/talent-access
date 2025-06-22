@@ -18,5 +18,10 @@
     {% else %}
     <p class="text-muted">Aucune offre disponible pour le moment.</p>
     {% endif %}
+    <div class="mt-4">
+        <a href="{% url 'diplome_dashboard' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Retour au tableau de bord
+        </a>
+    </div>
 </div>
 {% endblock %}
