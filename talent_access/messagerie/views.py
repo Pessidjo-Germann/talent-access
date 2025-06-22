@@ -9,9 +9,14 @@ from .models import Conversation, Message
 
 @login_required
 def conversation_list(request):
-    conversations = Conversation.objects.filter(
+    conversations_qs = Conversation.objects.filter(
         Q(participant1=request.user) | Q(participant2=request.user)
     )
+    conversations = []
+    for conv in conversations_qs:
+        conv.other = conv.other_participant(request.user)
+        conversations.append(conv)
+
     return render(
         request,
         "messagerie/conversation_list.html",
