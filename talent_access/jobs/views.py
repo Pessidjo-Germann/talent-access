@@ -145,3 +145,13 @@ def modifier_offre(request, offre_id):
         "modifier_offre.html",
         {"form": form, "offre": offre},
     )
+
+
+@login_required
+def liste_offres(request):
+    """List all available job offers for graduates."""
+    if request.user.statut != Utilisateur.Statut.DIPLOME:
+        return redirect("pme_dashboard")
+
+    offres = OffreEmploi.objects.all().order_by("-date_publication")
+    return render(request, "liste_offres.html", {"offres": offres})

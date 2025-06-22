@@ -1,0 +1,22 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Offres d'emploi{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Offres d'emploi disponibles</h2>
+    {% if offres %}
+    <div class="list-group">
+        {% for offre in offres %}
+        <a href="{% url 'offre_detail' offre.id %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ offre.titre }}</h5>
+                <small>{{ offre.date_publication|date:"d/m/Y" }}</small>
+            </div>
+            <p class="mb-1 text-muted">{{ offre.entreprise.first_name }} - {{ offre.localisation }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">Aucune offre disponible pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}
