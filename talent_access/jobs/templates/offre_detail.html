@@ -1,0 +1,19 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Détail de l'offre{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">{{ offre.titre }}</h2>
+    <p><strong>Entreprise :</strong> {{ offre.entreprise.first_name }}</p>
+    <p><strong>Lieu :</strong> {{ offre.localisation }}</p>
+    <p><strong>Type de contrat :</strong> {{ offre.type_contrat }}</p>
+    <p class="mt-4">{{ offre.description }}</p>
+    <div class="mt-4">
+        {% if deja_postule %}
+            <span class="badge bg-secondary">Vous avez déjà postulé à cette offre.</span>
+        {% else %}
+            <a href="{% url 'postuler_offre' offre.id %}" class="btn btn-primary">Postuler</a>
+        {% endif %}
+        <a href="{% url 'diplome_dashboard' %}" class="btn btn-outline-secondary">Retour</a>
+    </div>
+</div>
+{% endblock %}

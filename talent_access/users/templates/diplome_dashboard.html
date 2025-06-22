@@ -148,10 +148,10 @@
                                         </div>
                                     </div>
                                     <div class="offer-actions">
-                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <a href="{% url 'offre_detail' offre.id %}" class="btn btn-outline-primary btn-sm">
                                             <i class="fas fa-eye me-1"></i>Voir
                                         </a>
-                                        <a href="#" class="btn btn-primary btn-sm">
+                                        <a href="{% url 'postuler_offre' offre.id %}" class="btn btn-primary btn-sm">
                                             <i class="fas fa-paper-plane me-1"></i>Postuler
                                         </a>
                                     </div>
