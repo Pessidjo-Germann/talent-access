@@ -96,3 +96,18 @@ def creer_offre(request):
         form = OffreForm()
 
     return render(request, "creer_offre.html", {"form": form})
+
+
+@login_required
+def offre_detail(request, offre_id):
+    """Display the detail of a job offer for graduates."""
+    if request.user.statut != Utilisateur.Statut.DIPLOME:
+        return redirect("pme_dashboard")
+
+    offre = get_object_or_404(OffreEmploi, id=offre_id)
+    deja_postule = Candidature.objects.filter(offre=offre, candidat=request.user).exists()
+    return render(
+        request,
+        "offre_detail.html",
+        {"offre": offre, "deja_postule": deja_postule},
+    )
